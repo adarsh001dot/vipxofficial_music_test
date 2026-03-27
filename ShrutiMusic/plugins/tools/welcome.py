@@ -39,7 +39,7 @@ def circle(pfp, size=(450, 450)):
 
 def welcomepic(pic, user, chat, id, uname):
     # Using the clean final image
-    background = Image.open("ShrutiMusic/assets/134850.png")
+    background = Image.open("ShrutiMusic/assets/welcome.png")
     pfp = Image.open(pic).convert("RGBA")
     pfp = circle(pfp)
     pfp = pfp.resize((380, 380))  # Circle size
