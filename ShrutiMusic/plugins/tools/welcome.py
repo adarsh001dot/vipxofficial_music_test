@@ -38,17 +38,27 @@ def circle(pfp, size=(450, 450)):
     return pfp
 
 def welcomepic(pic, user, chat, id, uname):
+    # Updated background image
     background = Image.open("ShrutiMusic/assets/welcome.png")
     pfp = Image.open(pic).convert("RGBA")
     pfp = circle(pfp)
-    pfp = pfp.resize((450, 450)) 
+    pfp = pfp.resize((400, 400))  # Adjusted circle size for new image
     draw = ImageDraw.Draw(background)
-    font = ImageFont.truetype('ShrutiMusic/assets/font.ttf', size=45)
-    font2 = ImageFont.truetype('ShrutiMusic/assets/font.ttf', size=90)
-    draw.text((65, 250), f'NAME : {unidecode(user)}', fill="white", font=font)
-    draw.text((65, 340), f'ID : {id}', fill="white", font=font)
-    draw.text((65, 430), f"USERNAME : {uname}", fill="white", font=font)
-    pfp_position = (767, 133)  
+    
+    # Font settings
+    font = ImageFont.truetype('ShrutiMusic/assets/font.ttf', size=48)
+    font2 = ImageFont.truetype('ShrutiMusic/assets/font.ttf', size=42)
+    
+    # Adjusted text positions based on new image layout
+    # NAME position (after "NAME:" label)
+    draw.text((220, 420), f'{unidecode(user)}', fill="white", font=font)
+    # ID position (after "ID:" label)
+    draw.text((220, 560), f'{id}', fill="white", font=font)
+    # USERNAME position (after "USERNAME:" label)
+    draw.text((220, 700), f'{uname}', fill="white", font=font2)
+    
+    # Profile picture position (adjust based on where circle is in new image)
+    pfp_position = (850, 150)  # Right side position
     background.paste(pfp, pfp_position, pfp)  
     background.save(f"downloads/welcome#{id}.png")
     return f"downloads/welcome#{id}.png"
