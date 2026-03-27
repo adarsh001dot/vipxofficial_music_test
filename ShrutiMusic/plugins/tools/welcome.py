@@ -26,6 +26,7 @@ class temp:
     U_NAME = None
     B_NAME = None
 
+# ------------------ CIRCLE ------------------ #
 def circle(pfp, size=(450, 450)):
     pfp = pfp.resize(size, Image.LANCZOS).convert("RGBA")
     bigsize = (pfp.size[0] * 3, pfp.size[1] * 3)
@@ -37,36 +38,34 @@ def circle(pfp, size=(450, 450)):
     pfp.putalpha(mask)
     return pfp
 
+# ------------------ WELCOME IMAGE ------------------ #
 def welcomepic(pic, user, chat, id, uname):
-    # Using the clean final image
     background = Image.open("ShrutiMusic/assets/welcome.png")
     pfp = Image.open(pic).convert("RGBA")
     pfp = circle(pfp)
-    pfp = pfp.resize((380, 380))  # Circle size
+
+    # ✅ Perfect circle fit
+    pfp = pfp.resize((360, 360))
+
     draw = ImageDraw.Draw(background)
-    
-    # Font settings
+
+    # Fonts
     font = ImageFont.truetype('ShrutiMusic/assets/font.ttf', size=45)
-    font_small = ImageFont.truetype('ShrutiMusic/assets/font.ttf', size=40)
-    
-    # Text positions (after the labels)
-    # NAME label position - text will appear after "NAME :"
-    draw.text((280, 380), f'{unidecode(user)}', fill="white", font=font)
-    
-    # ID label position - text will appear after "ID :"
-    draw.text((280, 520), f'{id}', fill="white", font=font)
-    
-    # USERNAME label position - text will appear after "USERNAME :"
-    draw.text((320, 660), f'{uname if uname else "Not Set"}', fill="white", font=font_small)
-    
-    # Profile picture position (right side circle area)
-    pfp_position = (830, 180)  # Right side
-    background.paste(pfp, pfp_position, pfp)  
-    
-    # Save the image
+    font2 = ImageFont.truetype('ShrutiMusic/assets/font.ttf', size=40)
+
+    # ✅ TEXT POSITIONS FIXED (image ke according)
+    draw.text((260, 370), f'{unidecode(user)}', fill="white", font=font)
+    draw.text((260, 510), f'{id}', fill="white", font=font)
+    draw.text((300, 650), f'{uname if uname else "Not Set"}', fill="white", font=font2)
+
+    # ✅ PROFILE POSITION FIXED
+    pfp_position = (860, 190)
+    background.paste(pfp, pfp_position, pfp)
+
     background.save(f"downloads/welcome#{id}.png")
     return f"downloads/welcome#{id}.png"
 
+# ------------------ COMMAND ------------------ #
 @app.on_message(filters.command("welcome") & ~filters.private)
 async def auto_state(_, message):
     usage = "<b>❖ ᴜsᴀɢᴇ ➥</b> /welcome [on|off]"
@@ -97,6 +96,7 @@ async def auto_state(_, message):
     else:
         await message.reply("✦ Only Admins Can Use This Command")
 
+# ------------------ WELCOME HANDLER ------------------ #
 @app.on_chat_member_updated(filters.group, group=-3)
 async def greet_group(_, member: ChatMemberUpdated):
     chat_id = member.chat.id
@@ -113,6 +113,7 @@ async def greet_group(_, member: ChatMemberUpdated):
         return
 
     user = member.new_chat_member.user if member.new_chat_member else member.from_user
+
     try:
         pic = await app.download_media(
             user.photo.big_file_id, file_name=f"pp{user.id}.png"
@@ -130,6 +131,7 @@ async def greet_group(_, member: ChatMemberUpdated):
         welcomeimg = welcomepic(
             pic, user.first_name, member.chat.title, user.id, user.username
         )
+
         temp.MELCOW[f"welcome-{member.chat.id}"] = await app.send_photo(
             member.chat.id,
             photo=welcomeimg,
