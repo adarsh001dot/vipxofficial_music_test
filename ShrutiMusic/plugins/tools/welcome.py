@@ -38,28 +38,32 @@ def circle(pfp, size=(450, 450)):
     return pfp
 
 def welcomepic(pic, user, chat, id, uname):
-    # Updated background image
-    background = Image.open("ShrutiMusic/assets/welcome.png")
+    # Using the clean final image
+    background = Image.open("ShrutiMusic/assets/134850.png")
     pfp = Image.open(pic).convert("RGBA")
     pfp = circle(pfp)
-    pfp = pfp.resize((400, 400))  # Adjusted circle size for new image
+    pfp = pfp.resize((380, 380))  # Circle size
     draw = ImageDraw.Draw(background)
     
     # Font settings
-    font = ImageFont.truetype('ShrutiMusic/assets/font.ttf', size=48)
-    font2 = ImageFont.truetype('ShrutiMusic/assets/font.ttf', size=42)
+    font = ImageFont.truetype('ShrutiMusic/assets/font.ttf', size=45)
+    font_small = ImageFont.truetype('ShrutiMusic/assets/font.ttf', size=40)
     
-    # Adjusted text positions based on new image layout
-    # NAME position (after "NAME:" label)
-    draw.text((220, 420), f'{unidecode(user)}', fill="white", font=font)
-    # ID position (after "ID:" label)
-    draw.text((220, 560), f'{id}', fill="white", font=font)
-    # USERNAME position (after "USERNAME:" label)
-    draw.text((220, 700), f'{uname}', fill="white", font=font2)
+    # Text positions (after the labels)
+    # NAME label position - text will appear after "NAME :"
+    draw.text((280, 380), f'{unidecode(user)}', fill="white", font=font)
     
-    # Profile picture position (adjust based on where circle is in new image)
-    pfp_position = (850, 150)  # Right side position
+    # ID label position - text will appear after "ID :"
+    draw.text((280, 520), f'{id}', fill="white", font=font)
+    
+    # USERNAME label position - text will appear after "USERNAME :"
+    draw.text((320, 660), f'{uname if uname else "Not Set"}', fill="white", font=font_small)
+    
+    # Profile picture position (right side circle area)
+    pfp_position = (830, 180)  # Right side
     background.paste(pfp, pfp_position, pfp)  
+    
+    # Save the image
     background.save(f"downloads/welcome#{id}.png")
     return f"downloads/welcome#{id}.png"
 
