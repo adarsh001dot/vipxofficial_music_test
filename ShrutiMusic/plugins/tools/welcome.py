@@ -26,7 +26,7 @@ class temp:
     U_NAME = None
     B_NAME = None
 
-def circle(pfp, size=(450, 450)):
+def circle(pfp, size=(400, 400)):
     pfp = pfp.resize(size, Image.LANCZOS).convert("RGBA")
     bigsize = (pfp.size[0] * 3, pfp.size[1] * 3)
     mask = Image.new("L", bigsize, 0)
@@ -48,7 +48,7 @@ def welcomepic(pic, user, chat, id, uname):
     draw.text((65, 250), f'NAME : {unidecode(user)}', fill="white", font=font)
     draw.text((65, 340), f'ID : {id}', fill="white", font=font)
     draw.text((65, 430), f"USERNAME : {uname}", fill="white", font=font)
-    pfp_position = (767, 133)  
+    pfp_position = (820, 150)  
     background.paste(pfp, pfp_position, pfp)  
     background.save(f"downloads/welcome#{id}.png")
     return f"downloads/welcome#{id}.png"
